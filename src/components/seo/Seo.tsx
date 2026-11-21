@@ -74,14 +74,24 @@ export function Seo({
     upsertMeta('property', 'og:url', canonicalUrl)
     upsertMeta('property', 'og:site_name', siteConfig.name)
     upsertMeta('property', 'og:locale', siteConfig.locale.replace('-', '_'))
-    try {
-      if (!image) throw new Error('No social image')
-      const imageUrl = new URL(image, canonicalUrl).toString()
-      if (!['http:', 'https:'].includes(new URL(imageUrl).protocol)) throw new Error('Unsafe social image')
-      upsertMeta('property', 'og:image', imageUrl)
-      upsertMeta('name', 'twitter:image', imageUrl)
-    } catch { removeMeta('property', 'og:image'); removeMeta('name', 'twitter:image') }
-    upsertMeta('name', 'twitter:card', 'summary_large_image')
+    const socialImage = image ?? siteConfig.socialImage
+    if (socialImage) {
+      try {
+        const imageUrl = new URL(socialImage, canonicalUrl).toString()
+        if (!['http:', 'https:'].includes(new URL(imageUrl).protocol)) throw new Error('Unsafe social image')
+        upsertMeta('property', 'og:image', imageUrl)
+        upsertMeta('name', 'twitter:image', imageUrl)
+        upsertMeta('name', 'twitter:card', 'summary_large_image')
+      } catch {
+        removeMeta('property', 'og:image')
+        removeMeta('name', 'twitter:image')
+        upsertMeta('name', 'twitter:card', 'summary')
+      }
+    } else {
+      removeMeta('property', 'og:image')
+      removeMeta('name', 'twitter:image')
+      upsertMeta('name', 'twitter:card', 'summary')
+    }
     upsertMeta('name', 'twitter:title', fullTitle)
     upsertMeta('name', 'twitter:description', description)
 

@@ -12,7 +12,6 @@ import { categories } from '@/config/categories'
 import { paths } from '@/routes/paths'
 import { fetchPublishedArticles, type PublishedArticleSummary } from '@/services/content/articles'
 import { ArticleCard } from '@/components/news/ArticleCard'
-import { PageLoading } from '@/components/common/PageLoading'
 import { FacebookLiveSection } from '@/components/news/FacebookLiveSection'
 import { AdSlot } from '@/components/ads/AdSlot'
 import { StructuredData } from '@/components/seo/Seo'
@@ -28,7 +27,7 @@ export default function HomePage() {
   useEffect(() => {
     let active = true
     fetchPublishedArticles({ limit: 8 }).then((result) => { if (active) setArticles(result) })
-      .catch((error: unknown) => { if (active) setArticleError(error instanceof Error ? error.message : 'No se pudieron cargar las noticias.') })
+      .catch(() => { if (active) setArticleError('No se pudieron cargar las noticias. Inténtalo de nuevo más tarde.') })
       .finally(() => { if (active) setLoadingArticles(false) })
     return () => { active = false }
   }, [])
@@ -75,10 +74,10 @@ export default function HomePage() {
               <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand" aria-hidden="true" />
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-ink">
-                  {articles.length ? 'Edicion en curso' : 'Primera edicion en preparacion'}
+                  {loadingArticles ? 'Consultando noticias' : articleError ? 'Noticias no disponibles' : articles.length ? 'Noticias publicadas' : 'Sin noticias publicadas'}
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-ink-muted">
-                  {articles.length ? 'Hay noticias publicadas recientemente.' : 'Aun no hay noticias publicadas. No mostramos contenido de ejemplo como si fuera informacion real.'}
+                  {loadingArticles ? 'Estamos consultando el archivo de noticias.' : articleError ? 'No fue posible consultar el archivo en este momento.' : articles.length ? 'Consulta las publicaciones disponibles en el archivo.' : 'Todavía no hay noticias publicadas.'}
                 </p>
               </div>
             </div>
@@ -110,7 +109,7 @@ export default function HomePage() {
                         {category.name}
                       </span>
                       <span className="mt-0.5 block text-[9px] uppercase tracking-[0.14em] text-ink-muted">
-                        Explorar seccion
+                        Explorar sección
                       </span>
                     </span>
                     <ArrowUpRight
@@ -132,7 +131,7 @@ export default function HomePage() {
                   strokeWidth={1.6}
                   className="mt-0.5 shrink-0 text-brand"
                 />
-                La cobertura comenzará cuando el proceso editorial esté habilitado.
+                Consulta las noticias organizadas por sección.
               </p>
               <Link
                 to={paths.news}
@@ -155,7 +154,7 @@ export default function HomePage() {
             titleId="ultimas-noticias"
             kicker="Cobertura"
             title="Últimas noticias"
-            description={articles.length ? "Publicaciones recientes de la redaccion." : "El archivo editorial se activara con la primera cobertura verificada."}
+            description={loadingArticles ? 'Consultando las noticias publicadas.' : articleError ? 'No fue posible consultar las noticias en este momento.' : articles.length ? 'Noticias publicadas en el portal.' : 'Aquí aparecerán las noticias cuando se publiquen.'}
             action={
               <Link
                 to={paths.news}
@@ -172,7 +171,7 @@ export default function HomePage() {
             }
           />
 
-          {loadingArticles ? <div className="mt-8"><PageLoading /></div> : articleError ? <p role="alert" className="mt-8 border border-brand/30 bg-brand-soft/70 p-4 text-sm">{articleError}</p> : articles.length ? <>
+          {loadingArticles ? <div className="mt-8 flex items-center gap-3 py-5 text-sm text-ink-muted" role="status" aria-live="polite"><span aria-hidden="true" className="h-5 w-5 animate-spin rounded-full border-2 border-rule border-t-brand motion-reduce:animate-none" /><span>Cargando noticias…</span></div> : articleError ? <div role="alert" className="mt-8 border border-brand/30 bg-brand-soft/70 p-4 text-sm"><p>{articleError}</p><Link to={paths.news} className="mt-3 inline-flex font-semibold text-brand underline underline-offset-4">Ir al archivo de noticias</Link></div> : articles.length ? <>
             {(() => { const lead = articles.find((article) => article.isFeatured) ?? articles[0]; if (!lead) return null; const secondary = articles.filter((article) => article.id !== lead.id).slice(0, 3); return <>
               <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
                 <Link to={paths.article(lead.slug)} className="group border border-rule bg-paper-strong">
@@ -187,8 +186,8 @@ export default function HomePage() {
             className="mt-8"
             icon={Newspaper}
             eyebrow="Archivo vacío"
-            title="La primera edición está en preparación"
-            description="Todavía no se ha publicado ninguna noticia. Este espacio se activará cuando la redacción inicie la cobertura y el flujo editorial esté validado."
+            title="Todavía no hay noticias publicadas"
+            description="Cuando haya noticias publicadas, aparecerán en esta sección y en el archivo editorial."
             action={
               <ActionLink to={paths.about} variant="secondary">
                 Conocer el proyecto
@@ -208,7 +207,7 @@ export default function HomePage() {
             titleId="secciones-title"
             kicker="Guía del portal"
             title="Nuestras secciones"
-            description="La cobertura estará organizada por territorio y temas para facilitar la lectura."
+            description="Explora las noticias por territorio y tema."
           />
 
           <div className="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
@@ -261,7 +260,7 @@ export default function HomePage() {
                   Todas las noticias
                 </h3>
                 <p className="mt-2 text-xs leading-relaxed text-white/55">
-                  Consulta el archivo completo cuando inicie la cobertura.
+                  Consulta el archivo completo de noticias publicadas.
                 </p>
                 <p className="mt-4 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.16em] text-brand-light">
                   Ir al archivo
@@ -296,7 +295,7 @@ export default function HomePage() {
               </h2>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-white/60">
                 Estos principios guían cada decisión editorial y serán públicos para nuestros
-                lectores desde el primer día de cobertura.
+                lectores del portal.
               </p>
               <Link
                 to={paths.editorialPolicy}

@@ -24,6 +24,7 @@ const optionalUrl = z.preprocess(
 
 const environmentSchema = z.object({
   VITE_SITE_URL: optionalUrl,
+  VITE_SOCIAL_IMAGE: optionalUrl,
   VITE_GOOGLE_SITE_VERIFICATION: optionalText,
 
   VITE_SITE_INDEXABLE: z.preprocess(
@@ -60,6 +61,7 @@ const rawEnvironment = parsedEnvironment.success
 /** Validated, typed access to the public Vite environment. */
 export const env = {
   siteUrl: rawEnvironment.VITE_SITE_URL,
+  socialImage: rawEnvironment.VITE_SOCIAL_IMAGE,
   googleSiteVerification: rawEnvironment.VITE_GOOGLE_SITE_VERIFICATION,
   siteIndexable: rawEnvironment.VITE_SITE_INDEXABLE === 'true',
   supabaseUrl: rawEnvironment.VITE_SUPABASE_URL,

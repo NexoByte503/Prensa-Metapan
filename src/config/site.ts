@@ -23,5 +23,6 @@ export const siteConfig = {
   contactEmail: 'prensametapan@gmail.com',
   contactFacebookUrl: 'https://www.facebook.com/share/1DjiWvFgPG/',
   url: env.siteUrl,
+  socialImage: env.socialImage,
   isIndexable: env.siteIndexable,
 } as const
