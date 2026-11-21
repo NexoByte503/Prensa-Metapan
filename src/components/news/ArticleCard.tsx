@@ -23,7 +23,7 @@ export function ArticleCard({ article, className }: ArticleCardProps) {
         </div>
         <h3 className="mt-3 font-serif text-2xl font-semibold leading-[1.12] tracking-[-0.02em] transition-colors group-hover:text-brand"><Link to={paths.article(article.slug)}>{article.title}</Link></h3>
         {article.excerpt && <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-ink-muted">{article.excerpt}</p>}
-        <div className="mt-auto flex items-center gap-2 pt-5 text-[11px] text-ink-muted"><span>{article.author?.fullName ?? 'Redacción'}</span>{article.isFeatured ? <span className="text-brand">Destacada</span> : null}</div>
+        {article.isFeatured ? <div className="mt-auto pt-5 text-[11px] text-brand">Destacada</div> : null}
       </div>
     </article>
   )

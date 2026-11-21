@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
-import { ArrowLeft, CalendarDays, UserRound, Send } from 'lucide-react'
+import { ArrowLeft, CalendarDays, Send } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 
 import { ActionLink } from '@/components/common/ActionLink'
@@ -59,7 +59,7 @@ export default function ArticlePage() {
   return <>
     <Seo title={article?.seoTitle || article?.title || 'Noticia'} description={article?.seoDescription || article?.excerpt || article?.subtitle || undefined} path={paths.article(slug)} type="article" image={article?.ogImage || article?.featuredImage} />
     {article ? <>
-      <StructuredData data={{ '@context': 'https://schema.org', '@type': 'NewsArticle', headline: article.title, description: article.seoDescription || article.excerpt || article.subtitle || undefined, image: article.ogImage || article.featuredImage ? [new URL(article.ogImage || article.featuredImage!, siteConfig.url ?? window.location.origin).toString()] : undefined, datePublished: article.publishedAt, dateModified: article.updatedAt, author: article.author ? { '@type': 'Person', name: article.author.fullName } : undefined, publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url ?? window.location.origin }, mainEntityOfPage: { '@type': 'WebPage', '@id': new URL(paths.article(article.slug), siteConfig.url ?? window.location.origin).toString() } }} />
+      <StructuredData data={{ '@context': 'https://schema.org', '@type': 'NewsArticle', headline: article.title, description: article.seoDescription || article.excerpt || article.subtitle || undefined, image: article.ogImage || article.featuredImage ? [new URL(article.ogImage || article.featuredImage!, siteConfig.url ?? window.location.origin).toString()] : undefined, datePublished: article.publishedAt, dateModified: article.updatedAt, publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url ?? window.location.origin }, mainEntityOfPage: { '@type': 'WebPage', '@id': new URL(paths.article(article.slug), siteConfig.url ?? window.location.origin).toString() } }} />
       <StructuredData data={{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Inicio', item: new URL(paths.home, siteConfig.url ?? window.location.origin).toString() }, { '@type': 'ListItem', position: 2, name: 'Noticias', item: new URL(paths.news, siteConfig.url ?? window.location.origin).toString() }, ...(article.category ? [{ '@type': 'ListItem', position: 3, name: article.category.name, item: new URL(paths.category(article.category.slug), siteConfig.url ?? window.location.origin).toString() }] : []), { '@type': 'ListItem', position: article.category ? 4 : 3, name: article.title, item: new URL(paths.article(article.slug), siteConfig.url ?? window.location.origin).toString() }] }} />
     </> : null}
     {loading ? <Container className="py-20"><PageLoading /></Container> : error ? <Container className="py-16"><div role="alert" className="mx-auto max-w-3xl border border-brand/30 bg-brand-soft/70 p-5 text-sm">{error}<div className="mt-5"><ActionLink to={paths.news} icon={ArrowLeft} variant="secondary">Volver a noticias</ActionLink></div></div></Container> : !article ? <Container className="py-16"><div className="mx-auto max-w-3xl"><p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-brand">Archivo editorial</p><h1 className="mt-3 font-serif text-4xl font-semibold">Esta noticia no está publicada</h1><p className="mt-3 text-sm text-ink-muted">El enlace puede ser incorrecto o la noticia aún no está disponible.</p><div className="mt-6"><ActionLink to={paths.news} icon={ArrowLeft} variant="secondary">Volver a noticias</ActionLink></div></div></Container> : <>
@@ -68,7 +68,6 @@ export default function ArticlePage() {
           <h1 className="mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.03em] sm:text-6xl">{article.title}</h1>
           {article.subtitle ? <p className="mt-4 text-xl leading-relaxed text-ink-muted">{article.subtitle}</p> : null}
           {article.excerpt ? <p className="mt-5 border-l-2 border-brand pl-4 text-base leading-relaxed text-ink-muted">{article.excerpt}</p> : null}
-          <p className="mt-6 inline-flex items-center gap-2 text-xs text-ink-muted"><UserRound size={14} />{article.author?.fullName ?? 'Redacción'}</p>
           {article.featuredImage ? <img src={article.featuredImage} alt={article.featuredImageAlt || article.title} fetchPriority="high" decoding="async" className="mt-8 max-h-[36rem] w-full object-cover" /> : null}
           <div className="prose mt-9 max-w-none" dangerouslySetInnerHTML={{ __html: safeContent }} />
           <div className="mt-10"><AdSlot placement="article_inline" /></div>
