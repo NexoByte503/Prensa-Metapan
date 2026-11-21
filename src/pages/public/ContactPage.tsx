@@ -1,4 +1,4 @@
-import { FileText, Megaphone, RefreshCcw, ShieldAlert, ShieldCheck } from 'lucide-react'
+import { ExternalLink, FileText, Mail, Megaphone, MessageCircle, Phone, RefreshCcw, ShieldCheck } from 'lucide-react'
 
 import { ActionLink } from '@/components/common/ActionLink'
 import { Container } from '@/components/common/Container'
@@ -6,6 +6,7 @@ import { ContentSection } from '@/components/common/ContentSection'
 import { PageHeader } from '@/components/common/PageHeader'
 import { Seo } from '@/components/seo/Seo'
 import { paths } from '@/routes/paths'
+import { siteConfig } from '@/config/site'
 
 const contactPurposes = [
   {
@@ -33,14 +34,14 @@ export default function ContactPage() {
     <>
       <Seo
         title="Contacto"
-        description="Canales oficiales de Prensa Metapán. Información sobre cómo contactar a la redacción cuando estén habilitados."
+        description={`Contacta a Prensa Metapán por WhatsApp al ${siteConfig.contactPhone.display}, por correo o Facebook.`}
         path={paths.contact}
       />
 
       <PageHeader
         kicker="Contacto"
-        title="Canales oficiales en habilitación."
-        description="Estamos preparando los medios de contacto de la redacción. Esta página se actualizará únicamente con canales verificados."
+        title="Contacta a la redacción."
+        description={`Escríbenos por WhatsApp al ${siteConfig.contactPhone.display}, por correo a ${siteConfig.contactEmail} o Facebook.`}
         breadcrumbs={[
           { label: 'Inicio', to: paths.home },
           { label: 'Contacto' },
@@ -51,7 +52,7 @@ export default function ContactPage() {
         <Container className="grid gap-12 py-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16 lg:py-16">
           <div className="space-y-10">
             <div className="border border-rule bg-brand-soft/60 p-6">
-              <ShieldAlert
+              <Phone
                 aria-hidden="true"
                 size={22}
                 strokeWidth={1.6}
@@ -61,12 +62,41 @@ export default function ContactPage() {
                 id="contacto-estado-title"
                 className="mt-3 font-serif text-2xl font-semibold tracking-[-0.02em]"
               >
-                Todavía no hay correos, teléfonos ni redes sociales publicados.
+                Canales oficiales de contacto
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-                Prensa Metapán no ha habilitado canales oficiales de contacto. No inventamos datos
-                de atención ni publicamos cuentas no verificadas. Cuando existan, aparecerán en esta
-                página con su identificación correspondiente.
+                Comunícate con la redacción por WhatsApp, correo electrónico o Facebook.
+              </p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <a
+                  href={siteConfig.contactWhatsAppUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Escribir por WhatsApp a Prensa Metapán al ${siteConfig.contactPhone.display}`}
+                  className="inline-flex min-h-12 items-center gap-2 border border-ink bg-ink px-4 py-3 text-sm font-semibold text-paper transition-colors hover:bg-brand-dark"
+                >
+                  <MessageCircle aria-hidden="true" size={17} strokeWidth={1.8} />
+                  {siteConfig.contactPhone.display}
+                </a>
+                <a
+                  href={`mailto:${siteConfig.contactEmail}`}
+                  className="inline-flex min-h-12 items-center gap-2 border border-rule-strong bg-paper-strong px-4 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink"
+                >
+                  <Mail aria-hidden="true" size={17} strokeWidth={1.8} />
+                  Correo electrónico
+                </a>
+                <a
+                  href={siteConfig.contactFacebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-12 items-center gap-2 border border-rule-strong bg-paper-strong px-4 py-3 text-sm font-semibold text-ink transition-colors hover:border-ink"
+                >
+                  <ExternalLink aria-hidden="true" size={17} strokeWidth={1.8} />
+                  Facebook
+                </a>
+              </div>
+              <p className="mt-3 break-all text-xs text-ink-muted">
+                {siteConfig.contactEmail}
               </p>
             </div>
 
@@ -98,15 +128,14 @@ export default function ContactPage() {
               </div>
             </section>
 
-            <ContentSection title="Cómo se habilitará el contacto">
+            <ContentSection title="Cómo comunicarte">
               <p>
-                El formulario de contacto y los canales oficiales se activarán junto con la capa de
-                servicios del portal. Antes de recibir mensajes, se definirán el destino de los
-                datos, el tiempo de conservación y los responsables de su revisión.
+                Puedes escribir por WhatsApp al número publicado, enviar un correo o contactarnos
+                por Facebook para compartir información, solicitar una corrección o consultar sobre
+                el proyecto. Actualmente no hay formulario de contacto.
               </p>
               <p>
-                No se habilitará ningún formulario que envíe información a un servicio no
-                configurado. La prioridad es que cada canal sea real, seguro y verificable.
+                Todo material pasa por un proceso de verificación editorial antes de publicarse.
               </p>
             </ContentSection>
 

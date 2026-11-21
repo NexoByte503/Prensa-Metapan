@@ -16,6 +16,12 @@ export const siteConfig = {
   language: 'es',
   timeZone: 'America/El_Salvador',
   location: 'Metapán, Santa Ana, El Salvador',
+  contactPhone: {
+    display: '+503 7825 3640',
+  },
+  contactWhatsAppUrl: 'https://wa.me/50378253640',
+  contactEmail: 'prensametapan@gmail.com',
+  contactFacebookUrl: 'https://www.facebook.com/share/1DjiWvFgPG/',
   url: env.siteUrl,
   isIndexable: env.siteIndexable,
   launchStatus: 'Fase 1 · Base técnica en preparación',

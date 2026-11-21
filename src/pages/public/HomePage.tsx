@@ -325,8 +325,11 @@ export default function HomePage() {
               ¿Tienes información de interés público?
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-              Los canales oficiales para contactar a la redacción se habilitarán antes del
-              lanzamiento. No publicaremos datos de contacto sin verificarlos.
+              Escríbele a la redacción por WhatsApp al{' '}
+              <a className="font-semibold text-ink underline underline-offset-4" href={siteConfig.contactWhatsAppUrl} target="_blank" rel="noopener noreferrer">
+                {siteConfig.contactPhone.display}
+              </a>{' '}
+              para compartir información de interés público.
             </p>
           </div>
 
