@@ -16,7 +16,7 @@ export default function TermsPage() {
       <PageHeader
         kicker="Legal"
         title="Términos de uso"
-        description="Condiciones generales para el uso de este portal durante su fase de preparación."
+        description="Condiciones generales para el uso del portal Prensa Metapán."
         breadcrumbs={[
           { label: 'Inicio', to: paths.home },
           { label: 'Términos de uso' },
@@ -30,21 +30,18 @@ export default function TermsPage() {
               Versión preliminar
             </p>
             <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-              Este documento es una base de trabajo para la fase inicial. La versión definitiva se
-              publicará antes del lanzamiento editorial y podrá incorporar los datos de la entidad
-              responsable.
+              Este documento es una versión preliminar y debe revisarse con los datos de la entidad
+              responsable y las condiciones legales aplicables antes del lanzamiento editorial.
             </p>
           </div>
 
           <ContentSection title="Estado del servicio">
             <p>
-              Prensa Metapán se encuentra en desarrollo. El portal ofrece información sobre el
-              proyecto y una estructura de navegación, pero todavía no publica noticias ni permite
-              crear cuentas.
+              Prensa Metapán ofrece un portal informativo y herramientas para la gestión editorial.
+              Las funciones disponibles pueden variar según la configuración del servicio.
             </p>
             <p>
-              El servicio puede cambiar, interrumpirse o reiniciarse durante esta etapa sin previo
-              aviso.
+              El servicio puede cambiar, interrumpirse o reiniciarse sin previo aviso.
             </p>
           </ContentSection>
 

@@ -6,15 +6,15 @@ La tabla de rutas se declara en `src/routes/router.tsx`. Las URLs se generan con
 
 | Ruta | Página | Estado | Notas |
 | --- | --- | --- | --- |
-| `/` | `HomePage` | Lista | Portada editorial con estado de lanzamiento. |
-| `/noticias` | `NewsPage` | Lista | Archivo vacío y navegación por secciones. |
-| `/noticias/:slug` | `ArticlePage` | Placeholder | No muestra una nota ficticia. `noindex`. |
+| `/` | `HomePage` | Lista | Portada editorial con noticias publicadas y secciones. |
+| `/noticias` | `NewsPage` | Lista | Archivo público de noticias. |
+| `/noticias/:slug` | `ArticlePage` | Lista | Detalle de noticia, comentarios y metadatos SEO. |
 | `/categorias/:slug` | `CategoryPage` | Lista | Slug inválido renderiza `NotFoundPage`. |
-| `/buscar` | `SearchPage` | Lista | Formulario validado. Sin backend conectado ni resultados ficticios. `noindex`. |
-| `/quienes-somos` | `AboutPage` | Lista | Propósito, cobertura y fases. |
-| `/contacto` | `ContactPage` | Lista | Canales en habilitación; sin datos inventados. |
+| `/buscar` | `SearchPage` | Lista | Búsqueda pública de noticias. `noindex`. |
+| `/quienes-somos` | `AboutPage` | Lista | Propósito, cobertura y principios editoriales. |
+| `/contacto` | `ContactPage` | Lista | Enlaces de WhatsApp, correo electrónico y Facebook. |
 | `/politica-editorial` | `EditorialPolicyPage` | Lista | Documento preliminar. |
-| `/privacidad` | `PrivacyPage` | Lista | Tratamiento de datos de la fase actual. |
+| `/privacidad` | `PrivacyPage` | Lista | Tratamiento de datos del portal. |
 | `/terminos` | `TermsPage` | Lista | Condiciones preliminares. |
 | `*` | `NotFoundPage` | Lista | 404 dentro del layout público. |
 
@@ -32,7 +32,15 @@ Estas rutas usan `AdminAuthLayout`, un layout sin enlaces internos del panel, co
 
 | Ruta | Página | Acceso | Notas |
 | --- | --- | --- | --- |
-| `/admin` | `AdminHomePage` | Autenticado | Perfil, rol y estado honesto de Fase 2. `noindex`. |
+| `/admin` | `AdminHomePage` | Autenticado | Resumen del panel editorial. `noindex`. |
+| `/admin/noticias/*` | Páginas de noticias | Admin/editor | Crear, editar, publicar y administrar contenido. |
+| `/admin/categorias` | `AdminCategoriasPage` | Admin/editor | Administrar categorías. |
+| `/admin/multimedia` | `AdminMultimediaPage` | Admin/editor | Biblioteca y carga de archivos. |
+| `/admin/comentarios` | `AdminComentariosPage` | Admin | Moderar comentarios. |
+| `/admin/transmisiones` | `AdminTransmisionesPage` | Admin | Administrar transmisiones. |
+| `/admin/publicidad` | `AdminPublicidadPage` | Admin | Administrar anuncios. |
+| `/admin/estadisticas` | `AdminEstadisticasPage` | Admin | Consultar analítica agregada. |
+| `/admin/usuarios` | `AdminUsuariosPage` | Admin | Administrar cuentas editoriales. |
 | `/admin/*` | `AdminNotFoundPage` | Autenticado | 404 dentro del layout administrativo. |
 
 Toda la rama `/admin` está envuelta por `RequireAuth`:

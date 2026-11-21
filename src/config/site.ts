@@ -24,5 +24,4 @@ export const siteConfig = {
   contactFacebookUrl: 'https://www.facebook.com/share/1DjiWvFgPG/',
   url: env.siteUrl,
   isIndexable: env.siteIndexable,
-  launchStatus: 'Fase 1 · Base técnica en preparación',
 } as const

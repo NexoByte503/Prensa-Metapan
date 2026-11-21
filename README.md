@@ -1,8 +1,8 @@
 # Prensa Metapán
 
-Portal de noticias de **Metapán, Santa Ana y El Salvador**. El proyecto se construye por fases, con una arquitectura modular, TypeScript estricto y una identidad editorial pensada primero para móvil.
+Portal de noticias de **Metapán, Santa Ana y El Salvador**, con una arquitectura modular, TypeScript estricto y una identidad editorial pensada primero para móvil.
 
-> **Estado: Fase 2 — Backend y seguridad.** El esquema PostgreSQL, las políticas RLS, Supabase Auth, Storage y los servicios tipados están implementados y probados en Supabase local. El panel editorial completo y la conexión del portal público a la base de datos se desarrollarán en la Fase 3. Todavía no hay noticias reales publicadas ni un proyecto remoto vinculado.
+El repositorio incluye el portal público, el panel editorial protegido, gestión de noticias y categorías, multimedia, comentarios, transmisiones, publicidad, analítica y herramientas SEO. Las funciones conectadas requieren las variables y migraciones de Supabase del entorno correspondiente.
 
 ## Stack
 
@@ -17,7 +17,7 @@ Portal de noticias de **Metapán, Santa Ana y El Salvador**. El proyecto se cons
 | Almacenamiento | Supabase Storage |
 | Iconografía | Lucide React |
 | Formularios | React Hook Form + Zod |
-| Editor previsto | Tiptap (Fase 3) |
+| Editor de contenido | Tiptap |
 | Utilidades UI | clsx + tailwind-merge |
 | Tipografía | Inter Variable + Newsreader Variable (autoalojadas) |
 
@@ -84,14 +84,15 @@ Las claves locales de Supabase son efímeras y no deben commitearse.
 
 ```text
 ├── docs/                      # Arquitectura, rutas, desarrollo, base de datos y seguridad
-├── public/                    # Favicon, robots.txt y recursos estáticos
+├── public/                    # Favicon y recursos estáticos
 ├── src/
 │   ├── components/
 │   │   ├── auth/              # AuthCard, AuthAlert, PasswordField, RequireAuth
-│   │   ├── comments/          # Reservado para la fase de participación
+│   │   ├── admin/             # Componentes del CMS y sus herramientas
+│   │   ├── ads/               # Espacios publicitarios
+│   │   ├── analytics/         # Seguimiento de páginas
 │   │   ├── common/            # Container, botones, estados vacíos, errores
 │   │   ├── layout/            # Header, menú móvil y footer
-│   │   ├── multimedia/        # Reservado para galerías y video
 │   │   ├── news/              # Tarjetas y componentes editoriales
 │   │   └── seo/               # Metadatos del documento
 │   ├── config/                # Sitio, entorno validado, categorías y navegación
@@ -113,9 +114,9 @@ Las claves locales de Supabase son efímeras y no deben commitearse.
 │   └── main.tsx               # Punto de entrada de React
 ├── supabase/
 │   ├── config.toml            # Configuración local de Supabase
-│   ├── migrations/            # 5 migraciones reproducibles
+│   ├── migrations/            # Migraciones ordenadas por timestamp
 │   ├── tests/rls_checks.sql   # 49 pruebas RLS con pgTAP
-│   └── functions/             # Reservado para Edge Functions
+│   └── functions/             # Funciones de Supabase
 ├── .env.example
 └── vite.config.ts
 ```
@@ -126,38 +127,38 @@ La explicación de capas y decisiones está en [`docs/ARCHITECTURE.md`](docs/ARC
 
 | Ruta | Estado |
 | --- | --- |
-| `/` | Portada pública con estado de lanzamiento. |
-| `/noticias` | Archivo vacío con navegación por secciones. |
-| `/noticias/:slug` | Placeholder honesto: la nota no está publicada. |
+| `/` | Portada pública con noticias publicadas y secciones. |
+| `/noticias` | Archivo público de noticias. |
+| `/noticias/:slug` | Detalle de noticia y metadatos SEO. |
 | `/categorias/:slug` | Sección por categoría; slug inválido muestra 404. |
-| `/buscar` | Formulario validado; sin resultados ficticios. |
-| `/quienes-somos` | Propósito, cobertura y estado del proyecto. |
-| `/contacto` | Canales oficiales en habilitación, sin datos inventados. |
+| `/buscar` | Búsqueda pública de noticias. |
+| `/quienes-somos` | Propósito, cobertura y principios editoriales. |
+| `/contacto` | Teléfono/WhatsApp, correo electrónico y Facebook. |
 | `/politica-editorial` | Principios editoriales en versión preliminar. |
-| `/privacidad` | Tratamiento de datos de la fase actual. |
+| `/privacidad` | Tratamiento de datos del portal. |
 | `/terminos` | Condiciones preliminares. |
 | `/admin/login` | Acceso editorial con Supabase Auth. |
 | `/admin/recuperar-contrasena` | Solicitud de enlace de recuperación. |
 | `/admin/restablecer-contrasena` | Nueva contraseña desde enlace verificado. |
-| `/admin` | Panel protegido; muestra perfil, rol y estado de Fase 2. |
+| `/admin` | Panel protegido para el equipo editorial. |
 | `*` | Página 404 dentro del portal público. |
 
 Detalle completo en [`docs/ROUTES.md`](docs/ROUTES.md).
 
 ## Backend y seguridad
 
-Implementado y validado en local:
+Implementado en el repositorio:
 
-- 5 migraciones: esquema, funciones/triggers, RLS, Storage y categorías.
-- 12 tablas con RLS, restricciones, índices y búsqueda full-text en español.
+- Migraciones para esquema base, funciones/triggers, RLS, Storage, categorías, búsqueda/comentarios y monetización/SEO/analítica.
+- Tablas con RLS, restricciones, índices y búsqueda full-text en español.
 - Roles `admin` y `editor`; sin registro público de usuarios.
 - Comentarios nuevos siempre `pending`; correo del lector nunca público.
 - Storage con lectura pública y escritura reservada al personal.
 - Auditoría append-only sin correos ni contenido completo.
 - Recuperación de contraseña con Supabase Auth y correo local.
-- 49 pruebas RLS aprobadas con `npx supabase test db`.
+- Pruebas RLS con pgTAP disponibles en `supabase/tests/rls_checks.sql`.
 
-Pendiente de intervención manual: crear el proyecto remoto, aplicar las migraciones, configurar SMTP/Redirect URLs, crear las cuentas reales y verificar RLS en staging/producción.
+Antes de conectar un entorno, verifica el historial de migraciones, configura las variables de Supabase y Auth, y prueba RLS en staging. No apliques migraciones ya registradas ni ejecutes pruebas RLS en producción.
 
 Consulta [`docs/DATABASE.md`](docs/DATABASE.md) y [`docs/SECURITY.md`](docs/SECURITY.md).
 
@@ -169,7 +170,7 @@ Consulta [`docs/DATABASE.md`](docs/DATABASE.md) y [`docs/SECURITY.md`](docs/SECU
 - Interfaz responsive con prioridad móvil, menú accesible con bloqueo de scroll, focus trap y cierre con `Escape`.
 - Los tokens visuales están en `src/styles/index.css` (`@theme` de Tailwind 4).
 
-## Validaciones de la Fase 2
+## Validaciones históricas del backend
 
 - [x] Migraciones aplicadas desde cero con `npx supabase db reset`.
 - [x] 49 pruebas RLS aprobadas con `npx supabase test db`.
@@ -184,14 +185,12 @@ Consulta [`docs/DATABASE.md`](docs/DATABASE.md) y [`docs/SECURITY.md`](docs/SECU
 - [x] Móvil sin desbordamiento horizontal en login y panel.
 - [x] `npm run typecheck`, `npm run lint` y `npm run build`.
 
-## Próxima fase (no iniciada)
+## Preparación de producción
 
-1. Construir el panel editorial: dashboard, artículos, editor Tiptap y medios.
-2. Conectar el portal público a Supabase: archivo, detalle, categorías y búsqueda.
-3. Implementar la moderación visual de comentarios y el registro seguro de vistas.
-4. Gestionar publicidad, transmisiones y configuración desde el panel.
-5. Sanitizar el contenido enriquecido antes de renderizarlo.
-6. Configurar producción: proyecto remoto, SMTP, Redirect URLs, CSP y backups.
+- Verificar el historial remoto de migraciones y aplicar únicamente las pendientes.
+- Configurar Auth, redirecciones, SMTP y las variables de entorno del hosting.
+- Validar RLS, rutas SEO, cabeceras y flujos editoriales en staging.
+- Activar indexación cuando el dominio y el contenido editorial estén listos.
 
 ## Documentación
 

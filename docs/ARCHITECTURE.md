@@ -16,7 +16,7 @@ Navegador
                                                               └── PostgreSQL + RLS
 ```
 
-La Fase 2 incorpora backend real: Supabase Auth, esquema PostgreSQL, RLS, Storage y servicios tipados. El portal público todavía usa datos estáticos y no consulta noticias; esa conexión corresponde a la Fase 3.
+El portal usa React Router y servicios tipados; las funciones editoriales y de contenido se conectan a Supabase Auth, PostgreSQL con RLS y Storage. La navegación de categorías parte de `src/config/categories.ts`, cuyos slugs deben coincidir con el seed de la base.
 
 ## 2. Principios
 
@@ -35,7 +35,7 @@ La Fase 2 incorpora backend real: Supabase Auth, esquema PostgreSQL, RLS, Storag
 | --- | --- | --- |
 | `src/routes` | Tabla de rutas, URLs tipadas y carga de páginas. | Lógica de negocio o markup extenso. |
 | `src/layouts` | Estructura compartida (público, acceso y panel). | Consultas de datos. |
-| `src/pages` | Composición de páginas y contenido editorial de la fase. | Servicios de datos o utilidades genéricas. |
+| `src/pages` | Composición de páginas y contenido editorial. | Servicios de datos o utilidades genéricas. |
 | `src/components/common` | Primitivas reutilizables de interfaz. | Reglas de negocio. |
 | `src/components/auth` | Formularios y guard de acceso editorial. | Consultas directas a PostgreSQL. |
 | `src/components/news` | Piezas editoriales reutilizables. | Acceso directo a Supabase. |
@@ -99,23 +99,14 @@ La estructura completa está documentada en [`ROUTES.md`](ROUTES.md).
 
 ## 7. Datos y contenido
 
-### Fase 2
+### Portal público y backend
 
-- 12 tablas PostgreSQL con RLS.
-- Categorías iniciales por migración.
-- Servicios públicos de solo lectura para categorías y artículos.
-- Servicios de autenticación y perfil.
-- Storage y auditoría.
-- Sin noticias reales ni datos ficticios en producción.
-
-### Fase 3
-
-- El portal público consultará artículos publicados y categorías de Supabase.
-- Se implementará el editor Tiptap, los medios, la moderación y la configuración.
-- El contenido enriquecido se sanitizará antes de renderizarse.
-- La búsqueda usará `search_vector` y un índice GIN.
-
-Las categorías de la navegación pública siguen siendo estáticas en la Fase 2 para no romper el diseño. La unificación se hará al conectar el portal.
+- Las páginas públicas consultan artículos publicados, categorías y comentarios aprobados mediante servicios tipados.
+- El CMS usa autenticación Supabase y los roles admin/editor; RLS y permisos de PostgreSQL son la autorización efectiva.
+- El editor Tiptap, la biblioteca de medios, la moderación, transmisiones, publicidad y estadísticas forman parte del panel.
+- La búsqueda pública usa `search_published_article_ids` y el índice `search_vector_phase4`.
+- Los metadatos SEO se guardan por artículo; las funciones de Vercel generan respuestas de noticia, sitemap y robots.
+- La lista de categorías se mantiene en `src/config/categories.ts` y se sincroniza con los slugs sembrados en PostgreSQL.
 
 ## 8. Estilos e identidad
 
@@ -154,28 +145,12 @@ La paleta definitiva se ajustará cuando se entregue el logotipo oficial. Los co
 
 En desarrollo se muestra el mensaje técnico del error de ruta; en producción solo se muestra una descripción segura.
 
-## 11. Fases
+## 11. Alcance funcional
 
-### Fase 1 — Base técnica
+- **Fase 2:** esquema PostgreSQL, funciones, triggers, RLS, Storage y autenticación.
+- **Fase 3:** CMS editorial, roles, portal conectado, contenido y gestión de medios.
+- **Fase 4:** búsqueda pública y envío seguro de comentarios.
+- **Fase 5:** monetización, campos SEO y analítica agregada.
+- **Fase 6:** pruebas, seguridad y preparación para el lanzamiento.
 
-- Vite + React + TypeScript.
-- Tailwind CSS 4 con identidad provisional.
-- React Router con portal público y panel separado.
-- Estructura modular, errores, SEO básico y accesibilidad inicial.
-- Preparación de Supabase sin conexión.
-
-### Fase 2 — Backend y seguridad
-
-- Esquema PostgreSQL, funciones, triggers, RLS y Storage.
-- Supabase Auth y recuperación de contraseña.
-- Guard de `/admin`, perfil y rol.
-- Servicios tipados y cliente único.
-- Pruebas RLS locales y documentación.
-
-### Fase 3 — Panel editorial y portal conectado
-
-- Dashboard, artículos, Tiptap y medios.
-- Moderación visual de comentarios.
-- Publicidad, transmisiones y configuración.
-- Conexión del portal público a Supabase.
-- Sanitización de contenido y registro seguro de vistas.
+Este resumen describe el alcance del código; el estado de aplicación en Supabase y del despliegue se verifica por entorno.

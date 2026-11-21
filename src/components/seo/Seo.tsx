@@ -45,8 +45,8 @@ function removeCanonical(): void {
 }
 
 /**
- * Client-side document metadata. It keeps the SPA usable and shareable
- * while the project remains prerender-ready for a later SEO phase.
+ * Client-side document metadata for SPA routes; article metadata is also
+ * rendered by the server-side Vercel endpoint for sharing and indexing.
  */
 export function Seo({
   title,

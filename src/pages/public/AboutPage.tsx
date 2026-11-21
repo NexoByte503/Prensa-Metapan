@@ -4,43 +4,17 @@ import { ActionLink } from '@/components/common/ActionLink'
 import { Container } from '@/components/common/Container'
 import { ContentSection } from '@/components/common/ContentSection'
 import { PageHeader } from '@/components/common/PageHeader'
-import { SectionHeading } from '@/components/common/SectionHeading'
 import { NewsroomPrinciples } from '@/components/news/NewsroomPrinciples'
 import { Seo } from '@/components/seo/Seo'
 import { categories } from '@/config/categories'
 import { paths } from '@/routes/paths'
-import { cn } from '@/utils/cn'
-
-const projectPhases = [
-  {
-    phase: 'Fase 1',
-    title: 'Base técnica',
-    status: 'En curso',
-    description:
-      'Arquitectura del portal, rutas públicas, sistema de diseño y configuración del entorno.',
-  },
-  {
-    phase: 'Fase 2',
-    title: 'Contenido y backend',
-    status: 'Pendiente',
-    description:
-      'Supabase, base de datos, autenticación, editor de contenido y panel administrativo.',
-  },
-  {
-    phase: 'Fase 3',
-    title: 'Lanzamiento editorial',
-    status: 'Pendiente',
-    description:
-      'Validación de procesos, activación de la cobertura y publicación de las primeras notas.',
-  },
-] as const
 
 export default function AboutPage() {
   return (
     <>
       <Seo
         title="Quiénes somos"
-        description="Conoce el propósito, los principios editoriales y el estado de desarrollo de Prensa Metapán."
+        description="Conoce el propósito, la cobertura y los principios editoriales de Prensa Metapán."
         path={paths.about}
       />
 
@@ -69,13 +43,6 @@ export default function AboutPage() {
               <div>
                 <dt className="font-semibold text-ink">Formato</dt>
                 <dd className="mt-0.5 text-ink-muted">Periódico digital</dd>
-              </div>
-              <div>
-                <dt className="font-semibold text-ink">Estado</dt>
-                <dd className="mt-0.5 flex items-center gap-1.5 text-brand">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true" />
-                  
-                </dd>
               </div>
             </dl>
           </div>
@@ -135,15 +102,14 @@ export default function AboutPage() {
               </div>
             </section>
 
-            <ContentSection title="Nuestro punto de partida">
+            <ContentSection title="El portal y la redacción">
               <p>
-                El portal se encuentra en su fase técnica. La estructura pública, las rutas y el
-                sistema de diseño ya están preparados; la publicación de noticias comenzará cuando
-                el proceso editorial y el archivo de contenido estén habilitados.
+                Prensa Metapán reúne un portal público y herramientas editoriales para organizar
+                noticias, categorías, multimedia, comentarios, transmisiones y publicidad.
               </p>
               <p>
-                Durante esta etapa no se presentan notas de ejemplo como si fueran información
-                real. Las secciones muestran su estado de preparación de forma transparente.
+                Cada nota pasa por revisión editorial antes de publicarse. No mostramos contenido
+                de demostración como si fuera información real.
               </p>
             </ContentSection>
           </div>
@@ -173,8 +139,8 @@ export default function AboutPage() {
               />
               <h2 className="mt-3 font-serif text-lg font-semibold">Transparencia</h2>
               <p className="mt-2 text-xs leading-relaxed text-ink-muted">
-                Los principios editoriales y las reglas de publicación serán públicos antes del
-                inicio de la cobertura.
+                Los principios editoriales y las reglas de publicación están disponibles para que
+                los lectores conozcan nuestros criterios.
               </p>
               <ActionLink to={paths.editorialPolicy} variant="secondary" className="mt-4 w-full">
                 Política editorial
@@ -184,7 +150,7 @@ export default function AboutPage() {
             <div className="border-t border-rule pt-4">
               <h2 className="font-serif text-xl font-semibold tracking-[-0.02em]">Contacto</h2>
               <p className="mt-2 text-xs leading-relaxed text-ink-muted">
-                Los canales oficiales se publicarán cuando estén verificados y activos.
+                Puedes contactar a la redacción por WhatsApp, correo electrónico o Facebook.
               </p>
               <ActionLink
                 to={paths.contact}
@@ -223,51 +189,6 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="fases-title">
-        <Container className="py-12 lg:py-16">
-          <SectionHeading
-            titleId="fases-title"
-            kicker="Desarrollo"
-            title="Estado del proyecto"
-            description="El avance se comunica por fases para evitar presentar funciones que todavía no están disponibles."
-          />
-
-          <ol className="mt-8 grid gap-px border border-rule bg-rule lg:grid-cols-3">
-            {projectPhases.map((phase) => (
-              <li key={phase.phase} className="flex flex-col bg-paper-strong p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
-                    {phase.phase}
-                  </span>
-                  <span
-                    className={cn(
-                      'px-2 py-1 text-[9px] font-semibold uppercase tracking-[0.12em]',
-                      phase.status === 'En curso'
-                        ? 'bg-brand text-white'
-                        : 'border border-rule text-ink-muted',
-                    )}
-                  >
-                    {phase.status}
-                  </span>
-                </div>
-                <h3 className="mt-5 font-serif text-2xl font-semibold tracking-[-0.02em]">
-                  {phase.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-ink-muted">{phase.description}</p>
-              </li>
-            ))}
-          </ol>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ActionLink to={paths.editorialPolicy} icon={ArrowRight}>
-              Leer la política editorial
-            </ActionLink>
-            <ActionLink to={paths.contact} variant="secondary">
-              Canales de contacto
-            </ActionLink>
-          </div>
-        </Container>
-      </section>
     </>
   )
 }

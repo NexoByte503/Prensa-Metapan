@@ -124,7 +124,7 @@ set role = 'admin'
 where email = 'admin@tu-dominio.test';
 ```
 
-Después, los cambios de rol deben hacerse con la RPC `admin_set_user_role()` desde el panel de la Fase 3. No intentes cambiar el rol desde el navegador: los permisos de columna lo impiden.
+Después, los cambios de rol deben hacerse con la RPC `admin_set_user_role()` desde la sección de usuarios del panel. No intentes cambiar el rol desde consultas directas del navegador: los permisos de columna lo impiden.
 
 ### 5. Probar la recuperación de contraseña
 
@@ -169,7 +169,7 @@ Los datos locales se conservan hasta un `db reset` o `stop --no-backup`.
 | `/admin/recuperar-contrasena` | Público | Solicitar enlace de recuperación. |
 | `/admin/restablecer-contrasena` | Sesión de recuperación | Definir nueva contraseña. |
 | `/admin` | Solo autenticado | Estado del panel y perfil. |
-| `/admin/*` | Solo autenticado | Futuras herramientas de Fase 3. |
+| `/admin/*` | Solo autenticado | Herramientas editoriales; las opciones visibles dependen del rol. |
 
 Comportamiento:
 
@@ -237,7 +237,7 @@ Las páginas administrativas nuevas deben colgar de la rama protegida por `Requi
 
 ## Categorías
 
-La navegación pública de la Fase 1 usa 7 categorías estáticas. La base de datos tiene 8 categorías editoriales. **No cambiar la navegación pública** hasta la Fase 3, cuando el portal consuma Supabase como única fuente de verdad.
+La navegación pública usa las ocho categorías de `src/config/categories.ts`; sus slugs coinciden con el seed de Supabase. Al añadir o retirar una categoría, actualiza la configuración, el seed o una migración según corresponda y revisa los enlaces del menú.
 
 Para modificar categorías de la base:
 

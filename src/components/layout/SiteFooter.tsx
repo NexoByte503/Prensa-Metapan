@@ -5,7 +5,6 @@ import { Logo } from '@/components/common/Logo'
 import { categories } from '@/config/categories'
 import type { NavigationItem } from '@/config/navigation'
 import { institutionalNavigation, legalNavigation } from '@/config/navigation'
-import { siteConfig } from '@/config/site'
 import { paths } from '@/routes/paths'
 import { getCurrentYear } from '@/utils/date'
 
@@ -48,10 +47,6 @@ export function SiteFooter() {
             <p className="mt-5 text-sm leading-relaxed text-white/60">
               Un proyecto editorial dedicado a la actualidad de Metapán, Santa Ana y El Salvador,
               con contexto, verificación y servicio público.
-            </p>
-            <p className="mt-6 inline-flex items-center gap-2 border border-night-rule px-3 py-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/50">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-light" aria-hidden="true" />
-              {siteConfig.launchStatus}
             </p>
           </div>
 

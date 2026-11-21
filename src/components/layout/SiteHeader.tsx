@@ -44,10 +44,6 @@ export function SiteHeader() {
               />
               <span className="truncate">Metapán · Santa Ana · El Salvador</span>
             </p>
-            <p className="flex shrink-0 items-center gap-2 text-[9px] uppercase tracking-[0.16em] text-white/45">
-              <span className="h-1 w-1 bg-brand-light" aria-hidden="true" />
-              
-            </p>
           </Container>
         </div>
 
@@ -90,8 +86,6 @@ export function SiteHeader() {
 
               <span className="hidden border-l border-rule pl-4 text-right text-[9px] uppercase leading-relaxed tracking-[0.14em] text-ink-muted lg:block">
                 Edición digital
-                <br />
-                <span className="text-brand"></span>
               </span>
             </div>
           </div>

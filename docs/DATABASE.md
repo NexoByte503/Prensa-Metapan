@@ -1,20 +1,17 @@
 # Base de datos — Prensa Metapán
 
-## Estado de la Fase 2
+## Estado del esquema
 
-El backend está **implementado y versionado**, pero todavía **no existe un proyecto remoto vinculado**. Las migraciones se aplicaron y probaron en Supabase local.
+El repositorio contiene cinco migraciones base y extensiones posteriores para búsqueda/comentarios y monetización/SEO/analítica. Antes de aplicar cambios, compara los timestamps con el historial del proyecto Supabase de destino; no vuelvas a ejecutar ni alteres migraciones ya registradas.
 
 | Elemento | Estado |
 | --- | --- |
-| Esquema PostgreSQL | Implementado en 5 migraciones. |
-| Funciones y triggers | Implementados y probados. |
-| RLS y permisos | Implementados; 49 comprobaciones locales aprobadas. |
-| Storage | 4 buckets y 4 políticas implementadas. |
+| Esquema PostgreSQL | 12 tablas base; Fase 5 agrega `analytics_events` (13 tablas públicas en total). |
+| Funciones y triggers | Incluyen búsqueda, comentarios y analítica. |
+| RLS y permisos | Migraciones versionadas; pgTAP disponible en `supabase/tests/rls_checks.sql`. |
+| Storage | 4 buckets y políticas para medios editoriales y anuncios. |
 | Categorías iniciales | 8 categorías sembradas por migración. |
-| Supabase remoto | Pendiente: requiere crear el proyecto y aplicar las migraciones. |
-| Panel editorial | Fase 3. `/admin` solo verifica sesión y perfil. |
-
-No hay noticias reales, usuarios reales ni credenciales de producción en el repositorio.
+| CMS | Panel editorial protegido; los permisos efectivos los controlan RLS y PostgreSQL. |
 
 ## Migraciones
 
@@ -27,6 +24,8 @@ Las migraciones son reproducibles y se aplican en este orden:
 | `20261120090200_rls.sql` | RLS, políticas, permisos de tabla y columna. |
 | `20261120090300_storage.sql` | Buckets, límites de tamaño, MIME y políticas de Storage. |
 | `20261120090400_seed_categories.sql` | Categorías editoriales iniciales. |
+| `20261120100000_phase4_public_features.sql` | Búsqueda de noticias y envío público seguro de comentarios. |
+| `20261120110000_phase5_monetization_seo_analytics.sql` | Campos SEO, estados de anuncios y analítica agregada. |
 
 `supabase/seed.sql` está vacío a propósito: las categorías forman parte del esquema versionado y no deben duplicarse en el seed local.
 
@@ -103,11 +102,11 @@ La auditoría cubre perfiles, categorías, artículos, transmisiones, publicidad
 - Subtítulo: `B`.
 - Extracto: `C`.
 
-Tiene un índice GIN. El contenido completo no se indexa para mantener el índice pequeño y evitar exponer texto no revisado. La consulta pública se implementará en la Fase 3.
+Tiene un índice GIN. La columna `search_vector_phase4` amplía la búsqueda a contenido y se consulta mediante `search_published_article_ids`, que solo devuelve noticias publicadas y vigentes.
 
 ## RLS y permisos
 
-RLS está habilitado en las 12 tablas. Además, se revocaron los permisos amplios de Supabase y se concedió solo lo necesario por tabla y columna.
+RLS está habilitado en las tablas públicas, incluida `analytics_events`. Además, se revocan permisos amplios y se concede solo lo necesario por tabla y columna.
 
 ### Resumen de lectura pública
 
@@ -120,7 +119,7 @@ RLS está habilitado en las 12 tablas. Además, se revocaron los permisos amplio
 | Multimedia y etiquetas de notas | Solo de notas publicadas. |
 | Publicidad | Solo activa y dentro de fechas. |
 | Transmisiones | Lectura pública. |
-| Configuración, auditoría y vistas | Sin acceso. |
+| Configuración, auditoría, vistas y eventos analíticos | Sin lectura anónima. |
 
 ### Escritura
 
@@ -157,13 +156,13 @@ Reglas:
 - Solo un admin sube publicidad y elimina archivos.
 - No se permiten SVG ni ejecutables.
 - Convención recomendada de ruta: `{article-id}/{uuid}.{ext}` o `{profile-id}/{uuid}.{ext}`.
-- Validar dimensiones y contenido real de la imagen en la Fase 3; el MIME declarado no basta como validación visual.
+- Validar dimensiones y contenido real de las imágenes; el MIME declarado no basta como validación visual.
 
 ## Categorías iniciales
 
 La migración siembra: Metapán, Santa Ana, Nacionales, Internacionales, Deportes, Entretenimiento, Economía y Tecnología.
 
-La navegación pública de la Fase 1 conserva sus 7 categorías estáticas para no romper el diseño. La conexión entre categorías de PostgreSQL y navegación pública se hará en la Fase 3, evitando duplicar fuentes de verdad.
+La navegación pública usa las ocho categorías de `src/config/categories.ts`; sus slugs coinciden con la migración de categorías. Mantén ambas fuentes sincronizadas al cambiar el menú o el seed.
 
 ## Flujo local
 
@@ -256,13 +255,12 @@ npx supabase test db
 
 El archivo degrada temporalmente a otros administradores locales para aislar la prueba del "último admin". La transacción se revierte al final. **No ejecutar estas pruebas contra producción.**
 
-Resultado validado en la Fase 2: `49 tests`, `PASS`.
+Resultado histórico de la validación de Fase 2: `49 tests`, `PASS`. Reejecuta la suite en una base local o staging después de cambios de esquema; nunca contra producción.
 
-## Limitaciones actuales
+## Consideraciones de despliegue
 
-- No hay proyecto remoto vinculado ni migraciones aplicadas en producción.
-- No hay usuarios reales creados; deben crearse desde Studio/Dashboard.
-- La escritura de `article_views` no está expuesta al cliente; se implementará con un proceso seguro.
-- La consulta pública de noticias, búsqueda y comentarios se conectará en la Fase 3.
-- El contenido Tiptap deberá sanitizarse antes de renderizarse.
-- La política de retención de comentarios y auditoría debe aprobarse antes de producción.
+- El estado remoto depende del proyecto Supabase seleccionado; comprueba su historial antes de cualquier `db push`.
+- Crea cuentas editoriales desde Auth y asigna roles mediante el procedimiento administrativo documentado.
+- Las vistas se registran mediante la RPC segura de analítica; el cliente no inserta directamente en `article_views`.
+- Los comentarios públicos se envían mediante RPC y quedan pendientes de moderación.
+- Define la retención de comentarios, analítica y auditoría antes del lanzamiento.
