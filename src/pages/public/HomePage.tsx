@@ -23,14 +23,25 @@ export default function HomePage() {
   const [articles, setArticles] = useState<PublishedArticleSummary[]>([])
   const [loadingArticles, setLoadingArticles] = useState(true)
   const [articleError, setArticleError] = useState<string | null>(null)
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
     let active = true
     fetchPublishedArticles({ limit: 8 }).then((result) => { if (active) setArticles(result) })
-      .catch(() => { if (active) setArticleError('No se pudieron cargar las noticias. Inténtalo de nuevo más tarde.') })
+      .catch((error: unknown) => {
+        console.error('[Prensa Metapán] No se pudieron cargar las noticias de portada:', error)
+        if (active) setArticleError('No se pudieron cargar las noticias. Inténtalo de nuevo más tarde.')
+      })
       .finally(() => { if (active) setLoadingArticles(false) })
     return () => { active = false }
-  }, [])
+  }, [retryCount])
+
+  function retryArticleLoad() {
+    setArticles([])
+    setLoadingArticles(true)
+    setArticleError(null)
+    setRetryCount((count) => count + 1)
+  }
 
   return (
     <>
@@ -171,7 +182,7 @@ export default function HomePage() {
             }
           />
 
-          {loadingArticles ? <div className="mt-8 flex items-center gap-3 py-5 text-sm text-ink-muted" role="status" aria-live="polite"><span aria-hidden="true" className="h-5 w-5 animate-spin rounded-full border-2 border-rule border-t-brand motion-reduce:animate-none" /><span>Cargando noticias…</span></div> : articleError ? <div role="alert" className="mt-8 border border-brand/30 bg-brand-soft/70 p-4 text-sm"><p>{articleError}</p><Link to={paths.news} className="mt-3 inline-flex font-semibold text-brand underline underline-offset-4">Ir al archivo de noticias</Link></div> : articles.length ? <>
+          {loadingArticles ? <div className="mt-8 flex items-center gap-3 py-5 text-sm text-ink-muted" role="status" aria-live="polite"><span aria-hidden="true" className="h-5 w-5 animate-spin rounded-full border-2 border-rule border-t-brand motion-reduce:animate-none" /><span>Cargando noticias…</span></div> : articleError ? <div role="alert" className="mt-8 border border-brand/30 bg-brand-soft/70 p-4 text-sm"><p>{articleError}</p><button type="button" onClick={retryArticleLoad} className="mt-3 inline-flex border border-rule-strong px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:border-ink">Reintentar</button><Link to={paths.news} className="ml-4 inline-flex font-semibold text-brand underline underline-offset-4">Ir al archivo de noticias</Link></div> : articles.length ? <>
             {(() => { const lead = articles.find((article) => article.isFeatured) ?? articles[0]; if (!lead) return null; const secondary = articles.filter((article) => article.id !== lead.id).slice(0, 3); return <>
               <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
                 <Link to={paths.article(lead.slug)} className="group border border-rule bg-paper-strong">

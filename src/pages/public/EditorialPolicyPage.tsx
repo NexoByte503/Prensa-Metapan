@@ -65,9 +65,8 @@ export default function EditorialPolicyPage() {
                 Versión preliminar
               </p>
               <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-                Este documento es una base de trabajo y será revisado antes del lanzamiento
-                editorial. No constituye todavía una política definitiva aprobada por la dirección
-                del proyecto.
+                Este documento es una versión preliminar sujeta a revisión editorial. No constituye
+                todavía una política definitiva aprobada por la dirección del proyecto.
               </p>
             </div>
 
@@ -112,8 +111,8 @@ export default function EditorialPolicyPage() {
               </p>
               <p>
                 Toda persona o institución mencionada en una nota podrá solicitar una aclaración
-                cuando los canales de contacto estén habilitados. La solicitud será evaluada con
-                base en la evidencia disponible.
+                mediante los canales publicados en la página de contacto. La solicitud será
+                evaluada con base en la evidencia disponible.
               </p>
             </ContentSection>
 
@@ -143,8 +142,8 @@ export default function EditorialPolicyPage() {
 
             <ContentSection title="Vigencia y revisión" id="vigencia">
               <p>
-                Esta política se actualizará cuando se definan los responsables editoriales, los
-                canales oficiales y los procedimientos de publicación. La versión vigente será
+                Esta política se actualizará cuando cambien los responsables editoriales o los
+                procedimientos de publicación. La versión vigente será
                 siempre la publicada en esta página.
               </p>
             </ContentSection>

@@ -157,8 +157,8 @@ export default function SearchPage() {
                   className="mt-8"
                   icon={SearchX}
                   eyebrow="Sin resultados"
-                  title="El archivo todavía está vacío"
-                  description={`No hay noticias publicadas que coincidan con “${submittedQuery}”. La búsqueda estará disponible cuando el archivo editorial tenga contenido.`}
+                  title="No hay noticias que coincidan"
+                  description={`No encontramos noticias publicadas que coincidan con “${submittedQuery}”. Los canales de contacto están disponibles si deseas compartir información con la redacción.`}
                   action={
                     <ActionLink to={paths.news} variant="secondary">
                       Ir al archivo de noticias
@@ -169,10 +169,10 @@ export default function SearchPage() {
             ) : (
               <div className="border border-rule bg-paper-strong p-6 sm:p-8">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-brand">
-                  Búsqueda en preparación
+                  Buscar en el archivo
                 </p>
                 <h2 className="mt-2 font-serif text-2xl font-semibold tracking-[-0.02em]">
-                  El archivo editorial aún no está disponible.
+                  Busca entre las noticias publicadas.
                 </h2>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted">
                   Escribe al menos dos caracteres para buscar en títulos, contenido, categorías y etiquetas.
