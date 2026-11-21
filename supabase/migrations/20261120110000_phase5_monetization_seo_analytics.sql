@@ -122,10 +122,11 @@ begin
     'last7', (select count(*) from public.analytics_events e where e.event_type = 'page_view' and e.created_at >= now() - interval '7 days'),
     'last30', (select count(*) from public.analytics_events e where e.event_type = 'page_view' and e.created_at >= now() - interval '30 days'),
     'uniqueVisitors', count(distinct visitor_hash) filter (where event_type = 'page_view'),
-    'daily', coalesce((select jsonb_agg(jsonb_build_object('date', d.day::date, 'value', coalesce(x.views, 0)) order by d.day)
-      from generate_series(current_date - (safe_days - 1), current_date, interval '1 day') d(day)
-      left join (select date_trunc('day', created_at) day, count(*) views from public.analytics_events
-        where event_type = 'page_view' and created_at >= current_date - (safe_days - 1) group by 1) x on x.day = d.day), '[]'::jsonb),
+    'daily', coalesce((select jsonb_agg(jsonb_build_object('date', day_series.day_bucket::date, 'value', coalesce(event_days.views, 0)) order by day_series.day_bucket)
+      from generate_series(current_date - (safe_days - 1), current_date, interval '1 day') as day_series(day_bucket)
+      left join (select date_trunc('day', created_at) as day_bucket, count(*) as views from public.analytics_events
+        where event_type = 'page_view' and created_at >= current_date - (safe_days - 1) group by 1) as event_days
+        on event_days.day_bucket = day_series.day_bucket), '[]'::jsonb),
     'topArticles', coalesce((select jsonb_agg(to_jsonb(t)) from (
       select a.id, a.title, a.slug, count(e.id) views from public.analytics_events e join public.articles a on a.id=e.article_id
       where e.event_type='page_view' and e.created_at >= now() - make_interval(days => safe_days)
