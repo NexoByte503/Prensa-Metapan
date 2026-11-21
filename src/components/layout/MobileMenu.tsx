@@ -117,7 +117,6 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             <div className="border-t border-rule pt-5">
               <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-muted">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true" />
-                Portal en preparación · Fase 1
               </p>
               <p className="mt-3 text-xs leading-relaxed text-ink-muted">
                 Todavía no hay noticias publicadas. La primera edición está en preparación.

@@ -74,7 +74,7 @@ export default function AboutPage() {
                 <dt className="font-semibold text-ink">Estado</dt>
                 <dd className="mt-0.5 flex items-center gap-1.5 text-brand">
                   <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true" />
-                  Fase 1 · Base técnica
+                  
                 </dd>
               </div>
             </dl>
