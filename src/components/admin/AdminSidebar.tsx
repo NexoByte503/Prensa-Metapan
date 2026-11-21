@@ -80,19 +80,21 @@ const moderationNav: readonly AdminNavItem[] = [
   { label: 'Transmisiones', to: paths.adminTransmisiones, icon: Radio, roles: ['admin'] },
 ]
 
-const isNavItemVisible = (item: AdminNavItem): boolean =>
-  item.roles.includes('admin') || item.roles.includes('editor')
+const isNavItemVisible = (item: AdminNavItem, role: AdminNavRole | null): boolean =>
+  role !== null && item.roles.includes(role)
 
 function NavSection({
   title,
   items,
+  role,
   onClose,
 }: {
   readonly title: string
   readonly items: readonly AdminNavItem[]
+  readonly role: AdminNavRole | null
   readonly onClose: () => void
 }) {
-  const visibleItems = items.filter(isNavItemVisible)
+  const visibleItems = items.filter((item) => isNavItemVisible(item, role))
 
   if (visibleItems.length === 0) {
     return null
@@ -135,6 +137,8 @@ export function AdminSidebar({ open, onClose }: AdminSidebarProps) {
 
   const userLabel = profile?.full_name ?? 'Equipo editorial'
   const roleLabel = isAdmin ? 'Administrador' : isEditor ? 'Editor' : 'Sesión editorial'
+  const currentRole: AdminNavRole | null =
+    profile?.role === 'admin' || profile?.role === 'editor' ? profile.role : null
 
   const content = (
     <div className="flex h-full flex-col gap-8">
@@ -150,10 +154,10 @@ export function AdminSidebar({ open, onClose }: AdminSidebarProps) {
         </button>
       </div>
 
-      <NavSection title="Panel" items={dashboardNav} onClose={onClose} />
-      <NavSection title="Contenido" items={contentNav} onClose={onClose} />
-      <NavSection title="Equipo" items={teamNav} onClose={onClose} />
-      <NavSection title="Moderación" items={moderationNav} onClose={onClose} />
+      <NavSection title="Panel" items={dashboardNav} role={currentRole} onClose={onClose} />
+      <NavSection title="Contenido" items={contentNav} role={currentRole} onClose={onClose} />
+      <NavSection title="Equipo" items={teamNav} role={currentRole} onClose={onClose} />
+      <NavSection title="Moderación" items={moderationNav} role={currentRole} onClose={onClose} />
 
       <div className="mt-auto border-t border-night-rule pt-5">
         <p className="px-3 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/40">

@@ -468,7 +468,11 @@ interface AdminArticleQueryRow {
   created_at: string
   updated_at: string
   category: ArticleCategory | null
-  author: ArticleAuthor | null
+  author: {
+    id: string
+    full_name: string
+    avatar_url: string | null
+  } | null
   content: string
   seo_title: string | null
   seo_description: string | null
@@ -500,8 +504,8 @@ function mapAdminArticle(row: AdminArticleQueryRow): AdminArticleRow {
     author: row.author
       ? {
           id: row.author.id,
-          fullName: row.author.fullName,
-          avatarUrl: row.author.avatarUrl,
+          fullName: row.author.full_name,
+          avatarUrl: row.author.avatar_url,
         }
       : null,
   }

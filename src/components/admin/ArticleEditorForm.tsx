@@ -40,6 +40,7 @@ import {
 import { fetchCategories } from '@/services/content/categories'
 import { sanitizeHtml } from '@/utils/sanitize'
 import { slugify } from '@/utils/slug'
+import { toDateTimeLocalValue } from '@/utils/date'
 import { toSafeVideoEmbedUrl } from '@/utils/video'
 import { listEditorialFiles, EDITORIAL_STORAGE_BUCKETS, type EditorialMediaFile } from '@/services/multimedia'
 
@@ -386,7 +387,7 @@ export function ArticleEditorForm({
       authorId: initialArticle?.author?.id ?? profile?.id ?? '',
       status: initialArticle?.status ?? 'draft',
       publishedAt: initialArticle?.publishedAt
-        ? new Date(initialArticle.publishedAt).toISOString().slice(0, 16)
+        ? toDateTimeLocalValue(initialArticle.publishedAt)
         : '',
       isFeatured: initialArticle?.isFeatured ?? false,
       isBreaking: initialArticle?.isBreaking ?? false,
@@ -427,7 +428,7 @@ export function ArticleEditorForm({
 
   async function executeSave(targetStatus: ArticleEditorSaveStatus): Promise<void> {
     if (targetStatus === 'published' && !getValues('publishedAt')) {
-      setValue('publishedAt', new Date().toISOString().slice(0, 16), { shouldValidate: true })
+      setValue('publishedAt', toDateTimeLocalValue(new Date()), { shouldValidate: true })
     }
     setValue('status', targetStatus, { shouldValidate: true })
     const isValid = await trigger()
@@ -494,7 +495,7 @@ export function ArticleEditorForm({
   }
 
   async function handlePublish(): Promise<void> {
-    setValue('publishedAt', new Date().toISOString().slice(0, 16), { shouldValidate: true })
+    setValue('publishedAt', toDateTimeLocalValue(new Date()), { shouldValidate: true })
     await executeSave('published')
   }
 

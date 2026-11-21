@@ -136,7 +136,7 @@ export default function AdminMultimediaPage() {
     setIsDeleting(true)
 
     try {
-      await deleteEditorialFile(fileToDelete.path.split('/')[0] as EditorialStorageBucket, fileToDelete.path)
+      await deleteEditorialFile(fileToDelete.bucket, fileToDelete.path)
       push('success', 'El archivo se eliminó correctamente.')
       setFileToDelete(null)
 

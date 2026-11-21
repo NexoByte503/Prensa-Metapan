@@ -116,8 +116,8 @@ export function AdminLayout() {
 
       <footer className="border-t border-rule">
         <Container className="flex flex-col gap-2 py-5 text-[10px] uppercase tracking-[0.12em] text-ink-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>Sesión autenticada · Fase 2</p>
-          <p>Panel editorial en preparación</p>
+          <p>Sesión autenticada · Fase 3</p>
+          <p>Contenido gestionado con Supabase</p>
         </Container>
       </footer>
       </div>

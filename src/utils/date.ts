@@ -36,6 +36,22 @@ export function formatShortDate(value: Date | string): string {
   return date ? shortDateFormatter.format(date).replace('.', '') : ''
 }
 
+/**
+ * Formats a date for an `<input type="datetime-local">` using the editor's
+ * local time. `toISOString().slice(0, 16)` must not be used here because the
+ * browser would reinterpret the UTC string as local time and shift it.
+ */
+export function toDateTimeLocalValue(value: Date | string): string {
+  const date = parseDate(value)
+  if (!date) {
+    return ''
+  }
+
+  const pad = (part: number): string => String(part).padStart(2, '0')
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
+}
+
 export function getCurrentYear(): number {
   return new Date().getFullYear()
 }

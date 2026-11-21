@@ -14,6 +14,7 @@ export type EditorialMediaType = 'image' | 'video' | 'audio' | 'document'
 
 export interface EditorialMediaFile {
   readonly id: string | null
+  readonly bucket: EditorialStorageBucket
   readonly name: string
   readonly path: string
   readonly url: string
@@ -100,8 +101,9 @@ export async function listEditorialFiles(
       const mimeType = String(file.metadata?.mimetype ?? '') || (file.name.toLowerCase().match(/\.(mp4|webm)$/) ? 'video/mp4' : 'image/jpeg')
       return {
         id: file.id,
+        bucket,
         name: file.name,
-        path: `${bucket}/${file.path}`,
+        path: file.path,
         url: getEditorialFileUrl(bucket, file.path),
         type: detectMediaType(file.name, mimeType),
         mimeType,

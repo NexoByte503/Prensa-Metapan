@@ -1,7 +1,6 @@
 import { Node } from '@tiptap/core'
 import type { DOMOutputSpec } from '@tiptap/pm/model'
 import { Image } from '@tiptap/extension-image'
-import { Link } from '@tiptap/extension-link'
 import { StarterKit } from '@tiptap/starter-kit'
 
 declare module '@tiptap/core' {
@@ -122,7 +121,12 @@ export const ArticleEditorFigure = Node.create<ArticleEditorFigureOptions>({
 
 export function createArticleEditorExtensions() {
   return [
-    StarterKit,
+    StarterKit.configure({
+      link: {
+        openOnClick: false,
+        HTMLAttributes: { target: '_blank', rel: 'noopener noreferrer' },
+      },
+    }),
     ArticleEditorFigure,
     ArticleEditorVideo,
     Image.configure({
@@ -130,10 +134,6 @@ export function createArticleEditorExtensions() {
       allowBase64: false,
       HTMLAttributes: {},
       resize: false,
-    }),
-    Link.configure({
-      openOnClick: false,
-      HTMLAttributes: { target: '_blank', rel: 'noopener noreferrer' },
     }),
   ]
 }
