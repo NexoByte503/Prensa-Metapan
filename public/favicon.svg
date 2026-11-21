@@ -1,20 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Prensa Metapán">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
   <defs>
-    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#0a7fb4" />
-      <stop offset="1" stop-color="#084f55" />
+
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#005288" />
+      <stop offset="30%" stop-color="#0088b8" />
+      <stop offset="55%" stop-color="#58c4d6" />
+      <stop offset="80%" stop-color="#0c5e69" />
+      <stop offset="100%" stop-color="#063940" />
     </linearGradient>
+
+
+    <linearGradient id="silverText" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="55%" stop-color="#e8ecef" />
+      <stop offset="100%" stop-color="#b8c2cc" />
+    </linearGradient>
+
+
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.55" />
+    </filter>
+
+
+    <filter id="textShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="5" stdDeviation="4" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
   </defs>
-  <rect width="64" height="64" fill="url(#cielo)" />
-  <text
-    x="32"
-    y="39"
-    fill="#f4fbfb"
-    font-family="Georgia, 'Times New Roman', serif"
-    font-size="27"
-    font-weight="700"
-    letter-spacing="-1.5"
-    text-anchor="middle"
-  >PM</text>
-  <rect x="16" y="47" width="32" height="3" fill="#7fdadd" />
+
+
+  <rect width="1024" height="1024" fill="url(#skyGrad)" />
+
+
+  <g opacity="0.22" fill="#042f36">
+    <rect x="60" y="650" width="55" height="200" />
+    <rect x="130" y="610" width="45" height="240" />
+    <rect x="195" y="670" width="70" height="180" />
+    <rect x="310" y="630" width="50" height="220" />
+    <rect x="520" y="620" width="60" height="230" />
+    <rect x="610" y="645" width="45" height="205" />
+    <rect x="740" y="635" width="65" height="215" />
+    <rect x="850" y="660" width="55" height="190" />
+  </g>
+
+
+  <g transform="translate(45, 345)" filter="url(#dropShadow)">
+
+    <rect x="0" y="0" width="218" height="235" fill="#ffffff" />
+
+    <rect x="8" y="8" width="202" height="219" fill="none" stroke="#111111" stroke-width="8" />
+
+
+    <path d="M 48 38 H 126 C 158 38 176 58 176 89 C 176 120 158 140 126 140 H 84 V 197 H 48 Z M 84 68 V 110 H 122 C 136 110 142 102 142 89 C 142 76 136 68 122 68 Z" fill="#0a0a0a" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+  </g>
+
+
+  <g font-family="&#39;Montserrat&#39;, &#39;Arial Black&#39;, &#39;Segoe UI&#39;, sans-serif" font-weight="900" fill="url(#silverText)" filter="url(#textShadow)">
+    <text x="285" y="445" font-size="98" letter-spacing="3">PRENSA</text>
+    <text x="285" y="575" font-size="104" letter-spacing="2">METAPÁN</text>
+  </g>
+
+
+  <g transform="translate(0, 610)">
+    <rect x="28" y="0" width="968" height="72" fill="#d9f2f2" fill-opacity="0.52" />
+    <text x="512" y="51" font-family="&#39;Montserrat&#39;, &#39;Arial&#39;, sans-serif" font-weight="800" font-size="44" letter-spacing="2.5" text-anchor="middle" fill="#ffffff" stroke="#083036" stroke-width="2.5">
+      INFORMANDO A LA POBLACIÓN
+    </text>
+  </g>
+
+
+
+  <path d="M 0 795 Q 250 725, 530 800 T 1024 770 L 1024 1024 L 0 1024 Z" fill="#083b42" />
+
+
+  <path d="M 0 830 Q 280 765, 560 835 T 1024 810 L 1024 1024 L 0 1024 Z" fill="#105963" />
+
+
+  <path d="M 0 870 Q 260 805, 540 875 T 1024 855 L 1024 1024 L 0 1024 Z" fill="#0d4b54" />
+
+
+  <text x="512" y="975" font-family="&#39;Trebuchet MS&#39;, &#39;Montserrat&#39;, &#39;Arial&#39;, sans-serif" font-weight="700" font-size="34" letter-spacing="1.5" text-anchor="middle" fill="#ffffff">
+    GRUPO CÁRDEZ
+  </text>
 </svg>
