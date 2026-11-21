@@ -1,0 +1,72 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/newsreader';
+@import '@fontsource-variable/newsreader/wght-italic.css';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Newsreader Variable', 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia,
+    serif;
+
+  --color-paper: #f3f8f7;
+  --color-paper-strong: #fbfdfd;
+  --color-ink: #0c2226;
+  --color-ink-muted: #506a6d;
+  --color-rule: #cfe0df;
+  --color-rule-strong: #a6c0bf;
+  --color-brand: #0b6c72;
+  --color-brand-dark: #084f55;
+  --color-brand-soft: #dff2f1;
+  --color-brand-light: #7fdadd;
+  --color-night: #072f38;
+  --color-night-soft: #0c3d45;
+  --color-night-rule: #1b4e55;
+
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --breakpoint-xs: 30rem;
+
+  --shadow-editorial: 0 18px 45px -30px rgb(7 47 56 / 0.35);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-paper);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-brand);
+    color: #f6fcfb;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+}

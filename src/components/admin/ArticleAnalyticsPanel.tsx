@@ -1,0 +1,9 @@
+import { useEffect, useState } from 'react'
+import { AdminBarChart } from '@/components/admin/AdminBarChart'
+import { fetchArticleAnalytics } from '@/services/analytics'
+
+export function ArticleAnalyticsPanel({ articleId, total }: { readonly articleId: string; readonly total: number }) {
+  const [days, setDays] = useState(30); const [rows, setRows] = useState<Array<{ date: string; value: number }>>([]); const [error, setError] = useState('')
+  useEffect(() => { let active = true; fetchArticleAnalytics(articleId, days).then((value) => { if (active) { setRows(value); setError('') } }).catch((e: unknown) => { if (active) setError(e instanceof Error ? e.message : 'No se pudieron cargar las visitas.') }); return () => { active = false } }, [articleId, days])
+  return <section className="mb-8 border border-rule bg-paper-strong p-5"><div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="font-serif text-xl font-semibold">Rendimiento de esta noticia</h2><p className="mt-1 text-xs text-ink-muted">{total} visitas totales registradas (incluye registros históricos).</p></div><label className="text-xs">Periodo <select value={days} onChange={(e) => setDays(Number(e.target.value))} className="border border-rule-strong bg-paper p-2"><option value={7}>7 días</option><option value={30}>30 días</option><option value={90}>90 días</option></select></label></div>{error ? <p role="alert" className="mt-4 text-sm text-brand">{error}</p> : rows.some((r) => r.value > 0) ? <div className="mt-4"><AdminBarChart data={rows.map((r) => ({ label: new Date(`${r.date}T12:00:00`).toLocaleDateString('es-SV', { day: '2-digit', month: 'short' }), value: r.value }))} height={140} /></div> : <p className="mt-4 border border-dashed border-rule p-4 text-sm text-ink-muted">Sin visitas medidas durante este periodo.</p>}</section>
+}
