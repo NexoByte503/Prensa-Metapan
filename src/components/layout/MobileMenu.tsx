@@ -117,10 +117,14 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             <div className="border-t border-rule pt-5">
               <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-muted">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand" aria-hidden="true" />
+                Canales de contacto
               </p>
               <p className="mt-3 text-xs leading-relaxed text-ink-muted">
-                Todavía no hay noticias publicadas. La primera edición está en preparación.
+                WhatsApp, correo electrónico y Facebook están disponibles para comunicarte con la redacción.
               </p>
+              <Link to={paths.contact} onClick={onClose} className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-brand hover:underline">
+                Ver contacto <ArrowUpRight aria-hidden="true" size={13} />
+              </Link>
             </div>
           </div>
         </div>

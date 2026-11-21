@@ -29,6 +29,13 @@ test('only accepts HTTP and HTTPS image URLs', () => {
   assert.equal(safeHttpUrl('https://cdn.example/image.jpg'), 'https://cdn.example/image.jpg')
 })
 
+test('server-rendered article does not expose author data or markup', async () => {
+  const endpoint = await readFile(new URL('../api/article.js', import.meta.url), 'utf8')
+  assert.doesNotMatch(endpoint, /author:profiles/)
+  assert.doesNotMatch(endpoint, /author\?\.full_name/)
+  assert.doesNotMatch(endpoint, /'@type': 'Person'/)
+})
+
 test('robots blocks all indexing until explicitly enabled', () => {
   const response = invokeRobots('false')
   assert.equal(response.code, 200)
